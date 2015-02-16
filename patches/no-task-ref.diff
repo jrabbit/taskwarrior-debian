@@ -1,0 +1,13 @@
+Description: don't install task-ref.pdf
+Bug-Debian: http://bugs.debian.org/737478
+Forwarded: not-need
+Last-Update: 2014-02-13
+
+--- a/doc/CMakeLists.txt
++++ b/doc/CMakeLists.txt
+@@ -12,5 +12,3 @@
+ install (DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/man/   DESTINATION ${TASK_MAN5DIR}
+                                                       FILES_MATCHING PATTERN "*.5")
+ install (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/rc     DESTINATION ${TASK_DOCDIR})
+-
+-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/ref/task-ref.pdf DESTINATION ${TASK_DOCDIR})

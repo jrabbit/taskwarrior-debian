@@ -1,0 +1,11 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+set -e
+
+if ! [ -L /usr/share/task ]
+then
+	rmdir /usr/share/task
+	ln -sf taskwarrior /usr/share/task
+fi

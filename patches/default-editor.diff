@@ -1,0 +1,53 @@
+Description: use “editor”, not “vi”
+ Use “editor” (rather than “vi”) as the default editor,
+ as per Policy §11.4.
+Author: Jakub Wilk <jwilk@debian.org>
+Forwarded: not-needed
+Last-Update: 2014-05-31
+
+--- a/doc/man/taskrc.5.in
++++ b/doc/man/taskrc.5.in
+@@ -217,12 +217,12 @@
+ Hyphenates lines when wrapping breaks occur mid-word.  Default value is 'on'.
+ 
+ .TP
+-.B editor=vi
++.B editor=editor
+ Specifies which text editor you wish to use for when the
+ .B task edit <ID>
+ command is used. Taskwarrior will first look for this configuration variable. If
+ found, it is used.  Otherwise it will look for the $VISUAL or $EDITOR
+-environment variables, before it defaults to using "vi".
++environment variables, before it defaults to using "editor".
+ 
+ .TP
+ .B edit.verbose=on
+--- a/src/Config.cpp
++++ b/src/Config.cpp
+@@ -72,7 +72,7 @@
+   "defaultheight=24                               # Without detection, assumed height\n"
+   "avoidlastcolumn=no                             # Fixes Cygwin width problem\n"
+   "hyphenate=on                                   # Hyphenates lines wrapped on non-word-breaks\n"
+-  "#editor=vi                                     # Preferred text editor\n"
++  "#editor=editor                                 # Preferred text editor\n"
+   "reserved.lines=1                               # Assume a 1-line prompt\n"
+   "\n"
+   "# Miscellaneous\n"
+--- a/src/commands/CmdEdit.cpp
++++ b/src/commands/CmdEdit.cpp
+@@ -765,13 +765,13 @@
+   std::string before_orig = before;
+   File::write (file.str (), before);
+ 
+-  // Determine correct editor: .taskrc:editor > $VISUAL > $EDITOR > vi
++  // Determine correct editor: .taskrc:editor > $VISUAL > $EDITOR > editor
+   std::string editor = context.config.get ("editor");
+   char* peditor = getenv ("VISUAL");
+   if (editor == "" && peditor) editor = std::string (peditor);
+   peditor = getenv ("EDITOR");
+   if (editor == "" && peditor) editor = std::string (peditor);
+-  if (editor == "") editor = "vi";
++  if (editor == "") editor = "editor";
+ 
+   // Complete the command line.
+   editor += " ";

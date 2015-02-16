@@ -1,0 +1,15 @@
+Description: fix task server setup documentation URL
+Origin: upstream, 91a587ca29365d7e66c6c13770781acf0ab43967
+Bug-Debian: https://bugs.debian.org/749180
+
+--- a/doc/man/task-sync.5.in
++++ b/doc/man/task-sync.5.in
+@@ -85,7 +85,7 @@
+ 
+ Setup is a matter of creating an account on a Taskserver (see your Taskserver
+ provider or operate your own - see
+-http://taskwarrior.org/projects/taskwarrior/wiki/Server_setup)
++http://taskwarrior.org/docs/server_setup.html)
+ 
+ Once you have an account, you'll receive a certificate, key and a password.
+ You'll need to put the certificate and key somewhere like this:

@@ -1,0 +1,1 @@
+rm_conffile /etc/bash_completion.d/task.sh 2.2.0-3~

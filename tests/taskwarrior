@@ -1,0 +1,28 @@
+#!/bin/sh
+set -e -u
+[ -d "$ADTTMP/" ] # sanity check
+cp -a test "$ADTTMP/"
+cd "$ADTTMP"
+mkdir -p home mock src/shell
+ln -sf /bin/false mock/scp
+ln -sf $(which task) src/task
+ln -sf $(which tasksh) src/shell/tasksh
+export HOME="$PWD/home/"
+export PATH="$PWD/mock/:$PATH"
+export TASKDATA="$HOME/taskrc"
+export TASKRC="$HOME/taskdata"
+echo 'this is not a valid taskrc' > "$TASKRC"
+cd test/
+rm -f export.yaml.t # requires export-yaml.pl
+rm -f import.yaml.t # requires import-yaml.pl
+rm -f json_test.t # requires json_test.cpp
+rm -f import.todo.sh.t # requires import-todo.sh.pl
+sed -i -e 's,"$source_dir/scripts/bash/task.sh","/etc/bash_completion.d/task",' bash_completion.t
+sed -e 's,${TESTBLOB},./*.t,' run_all.in > run_all
+chmod a+x run_all
+./run_all --verbose
+if ls -d "$TASKDATA" 2>/dev/null; then
+    exit 1
+fi
+
+# vim:ts=4 sw=4 et

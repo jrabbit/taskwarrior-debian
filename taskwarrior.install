@@ -1,0 +1,3 @@
+scripts/bash/task.sh /etc/bash_completion.d
+scripts/zsh/_task /usr/share/zsh/functions/Completion/Unix
+scripts/fish/task.fish /etc/fish/completions

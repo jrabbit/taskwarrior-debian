@@ -1,0 +1,5 @@
+# the "teh" misspelling is deliberate
+spelling-error-in-manpage usr/share/man/man5/task-tutorial.5.gz teh the
+
+# Conflicts makes transitioning /usr/share/task from directory to symlink slightly easier
+conflicts-with-version task (<< 2.2.0-4~)

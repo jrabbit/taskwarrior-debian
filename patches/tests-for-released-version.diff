@@ -1,0 +1,19 @@
+Description: allow running tests against released version
+ The test suite assumed that the version is a git hash.
+ This patch removes this assumption, thus allowing to run tests against a
+ released version of taskwarrior.
+Author: Jakub Wilk <jwilk@debian.org>
+Forwarded: no
+Last-Update: 2013-03-08
+
+--- a/test/basic.t
++++ b/test/basic.t
+@@ -58,7 +58,7 @@
+ 
+ # Test the _version command.
+ $output = qx{../src/task rc:basic.rc _version 2>&1};
+-like ($output, qr/[a-f0-9]{7}/, '_version - task version number');
++like ($output, qr/^([0-9.]+(?:beta[0-9]+)?|[a-f0-9]{7})$/, '_version - task version number');
+ 
+ # Cleanup.
+ unlink 'basic.rc';

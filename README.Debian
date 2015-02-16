@@ -1,0 +1,6 @@
+Sample configs, color themes and calendar files have been installed to
+/usr/share/taskwarrior and can be included in ~/.taskrc like this:
+
+include /usr/share/taskwarrior/dark-16.theme
+
+ -- Jakub Wilk <jwilk@debian.org>

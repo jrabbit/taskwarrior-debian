@@ -1,0 +1,150 @@
+Description: fix some groff warnings
+Author: Jakub Wilk <jwilk@debian.org>
+Forwarded: not-needed
+Last-Update: 2014-01-19
+
+--- a/doc/man/tasksh.1.in
++++ b/doc/man/tasksh.1.in
+@@ -71,7 +71,7 @@
+ .br
+ ID Project Pri Due        Active Age   Description
+ .br
+----------------------------------------------------------------------
++--------------------------------------------------------------
+ .br
+  2 party   H   10/17/2010        2 hrs Select and book a venue
+ .br
+--- a/doc/man/task-sync.5.in
++++ b/doc/man/task-sync.5.in
+@@ -26,8 +26,8 @@
+ Setup is straightforward.  You place your .task directory under revision
+ control.  You then need to perform a regular commit/push/pull/update to make
+ sure that the data is propagated when needed.  You can even do this using shell
+-scripts so that every task command is preceded by a 'pull' and followed by a
+-'push'.
++scripts so that every task command is preceded by a 'pull' and followed by
++a 'push'.
+ 
+ Strengths:
+ .br
+--- a/doc/man/task-color.5.in
++++ b/doc/man/task-color.5.in
+@@ -243,7 +243,13 @@
+ The precedence for the color rules is determined by the configuration
+ variable 'rule.precedence.color', which by default contains:
+ 
++.na
++.nh
++.cflags 4 ,
+     due.today,active,blocking,blocked,overdue,due,scheduled,keyword.,project.,tag.,uda.,recurring,pri.,tagged,completed,deleted
++.cflags 0 ,
++.hy
++.ad
+ 
+ These are just the color rules with the 'color.' prefix removed.  The
+ rule 'color.due.today' is the highest precedence, and 'color.deleted' is the lowest.
+--- a/doc/man/task-faq.5.in
++++ b/doc/man/task-faq.5.in
+@@ -97,8 +97,12 @@
+ 
+       ./configure "CFLAGS=-m32" "CXXFLAGS=-m32" "LDFLAGS=-m32"
+ 
++.na
++.nh
+ See:  http://taskwarrior.org/issues/817
+       http://stackoverflow.com/questions/3261909/build-32bit-on-64-bit-linux-using-a-configure-script
++.hy
++.ad
+ 
+ .TP
+ .B Q: How do I build taskwarrior under Cygwin?
+--- a/doc/man/taskrc.5.in
++++ b/doc/man/taskrc.5.in
+@@ -267,6 +267,9 @@
+ 
+ Here are the shortcut equivalents:
+ 
++.na
++.nh
++.cflags 4 ,
+     verbose=on
+     verbose=blank,header,footnote,label,new-id,affected,edit,special,project,sync
+ 
+@@ -275,6 +278,9 @@
+ 
+     verbose=nothing
+     verbose=
++.cflags 0 ,
++.hy
++.ad
+ 
+ Those additional comments are sent to the standard error for header, footnote
+ and project.  The others are sent to standard output.
+@@ -984,7 +990,13 @@
+ .RE
+ 
+ .TP
++.na
++.nh
++.cflags 4 ,
+ .B rule.precedence.color=due.today,active,blocking,blocked,overdue,due,scheduled,keyword.,project.,tag.,uda.,recurring,pri.,tagged,completed,deleted
++.cflags 0 ,
++.hy
++.ad
+ .RS
+ This setting specifies the precedence of the color rules, from highest to
+ lowest.  Note that the prefix 'color.' is omitted (for brevity), and that any
+@@ -1073,7 +1085,15 @@
+ urgency calculation.  These are default values, and may be modified to suit your
+ preferences, but it is important that you carefully consider any modifications.
+ See the original RFC-31 for complete details at:
++.br
++.na
++.nh
++.cflags 4 /
++.cflags 2 ;
+ http://tasktools.org/gitweb/gitweb.cgi?p=rfc.git;a=blob_plain;f=rfc31-urgency.txt;hb=HEAD
++.cflags 0 ; /
++.hy
++.ad
+ 
+ .SS SHADOW FILE
+ 
+--- a/doc/man/task-tutorial.5.in
++++ b/doc/man/task-tutorial.5.in
+@@ -568,6 +568,8 @@
+ .br
+ 
+ .br
++.na
++.nh
+              Prior Values                          Current Values
+ .br
+              ------------------------------------  ------------------------------------
+@@ -586,6 +588,8 @@
+ .br
+ end                                                10/16/2010
+ .br
++.hy
++.ad
+ 
+ .br
+ The undo command is not reversible.  Are you sure you want to revert to the previous state? (y/n) y
+@@ -2478,6 +2482,8 @@
+ $ task all
+ .br
+ 
++.na
++.nh
+ .br
+ ID Project Pri Due        Completed  Active Age   Description
+ .br
+@@ -2512,6 +2518,8 @@
+  5 party                                    5 hrs Print invitations
+ .br
+  3 party                                    6 hrs Select a caterer
++.hy
++.ad
+ .RE
+ 
+ There is a report showing completed work:

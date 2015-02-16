@@ -1,0 +1,8 @@
+Tests: taskwarrior
+Depends: taskwarrior, perl
+
+Tests: adequate-taskwarrior
+Depends: taskwarrior, adequate
+
+Tests: adequate-task
+Depends: task, adequate

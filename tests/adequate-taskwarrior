@@ -1,0 +1,2 @@
+#!/bin/sh
+exec adequate taskwarrior >&2

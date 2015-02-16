@@ -1,0 +1,77 @@
+This work was packaged for Debian by:
+
+    Alexander Neumann <alexander@debian.org> on Tue, 02 Feb 2010 15:33:14 +0100
+
+It was downloaded from:
+
+    http://taskwarrior.org
+
+Upstream Authors:
+
+    Paul Beckingham <paul@beckingham.net>
+    Federico Hernandez <ultrafredde@gmail.com>
+
+    A complete list of authors can be found in the file AUTHORS.
+
+Copyright:
+
+    Copyright 2006-2013, Paul Beckingham, Federico Hernandez
+
+License:
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+    http://www.opensource.org/licenses/mit-license.php
+
+Some files have different copyright holder, while they are available under the
+same license (MIT):
+
+src/{TDB2.cpp,Transport*,Uri.*}:
+Copyright 2010-2012, Johannes Schlatow
+
+scripts/vim/{ftdetect/task.vim,syntax/task*.vim}:
+Copyright 2009-2012, John Florian
+
+scripts/zsh/_task:
+Copyright 2010-2012, Johannes Schlatow
+Copyright 2009, P.C. Shyamshankar
+
+scripts/extensions/*.lua:
+Copyright 2012, Göteborg Bit Factory
+
+scripts/fish/task.fish:
+Copyright 2009-2012, Mick Koch <kchmck@gmail.com>
+
+The content of the holiday calendar files in doc/rc/holidays*.rc was provided
+by holidata.net and is licensed CC-BY-3.0.
+
+src/wcwidth6.c was written by Markus Kuhn and is available under the following
+license:
+
+Permission to use, copy, modify, and distribute this software
+for any purpose and without fee is hereby granted. The author
+disclaims all warranties with regard to this software.
+
+
+The Debian packaging is:
+
+    Copyright 2010-2012, Alexander Neumann <alexander@debian.org>
+    Copyright 2013-2014, Jakub Wilk <jwilk@debian.org>
+
+It is available under the MIT license (see above).

@@ -1,0 +1,61 @@
+Description: exit with non-zero code on test failure
+ Make the test runner exit with non-zero code if any of the tests fail.
+Author: Jakub Wilk <jwilk@debian.org>
+Bug: https://bug.tasktools.org/browse/TW-1296
+Forwarded: yes
+Last-Update: 2014-04-02
+
+--- a/test/run_all.in
++++ b/test/run_all.in
+@@ -1,5 +1,6 @@
+ #! /bin/sh
+ 
++rc=0
+ if [ x"$1" = x"--verbose" ];
+ then
+   for i in ${TESTBLOB}
+@@ -9,9 +10,10 @@
+     while read LINE
+     do
+       echo "$LINE"
+-    done < test.log
++    done < test.log || rc=1
+     rm test.log
+   done
++  exit $rc
+ else
+   date > all.log
+ 
+@@ -37,7 +39,7 @@
+       COUNT=`expr $COUNT + 1`
+     fi
+ 
+-    $i >> all.log 2>&1
++    $i >> all.log 2>&1 || rc=1
+   done
+ 
+   if [ $BAR -eq 1 ]; then
+@@ -53,4 +55,5 @@
+   printf "Fail:    %5d\n" `grep -c '^not' all.log`
+   printf "Skipped: %5d\n" `grep -c '^skip' all.log`
+   printf "Runtime: %5d seconds\n" $RUNTIME
++  exit $rc
+ fi
+--- a/test/test.cpp
++++ b/test/test.cpp
+@@ -29,6 +29,7 @@
+ #include <iomanip>
+ #include <string.h>
+ #include <math.h>
++#include <stdlib.h>
+ #include <test.h>
+ 
+ ///////////////////////////////////////////////////////////////////////////////
+@@ -85,6 +86,7 @@
+             << " skipped. "
+             << std::setprecision (3) << percentPassed
+             << "% passed.\n";
++  exit(_failed > 0);
+ }
+ 
+ ///////////////////////////////////////////////////////////////////////////////

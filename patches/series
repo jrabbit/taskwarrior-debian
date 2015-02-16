@@ -1,0 +1,9 @@
+tests-fail.diff
+tests-time-independent.diff
+tests-for-released-version.diff
+tests-count-eom.diff
+enable-warnings.diff
+fix-groff-warnings.diff
+no-task-ref.diff
+default-editor.diff
+fix-task-sync-man-url.diff

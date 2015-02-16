@@ -1,0 +1,315 @@
+task (2.3.0+dfsg-3) unstable; urgency=low
+
+  * Improve the get-orig-source script:
+    + Use the POSIX 1003.1-1988 (ustar) format for tarballs.
+  * Update the watch file.
+  * Add patch (default-editor.diff) to change the default editor from “vi” to
+    “editor”, as per Policy §11.4.
+  * Add patch (fix-task-sync-man-url.diff) to fix task server setup
+    documentation URL (closes: #749180).
+    Thanks to Axel Beckert for the bug report.
+  * Use “dpkg-parsechangelog -SVersion” for extracting version number in
+    debian/rules.
+
+ -- Jakub Wilk <jwilk@debian.org>  Sat, 31 May 2014 23:22:30 +0200
+
+task (2.3.0+dfsg-2) unstable; urgency=low
+
+  * Update git URL in the get-orig-source script.
+  * Use dh-buildinfo:
+    + Update debian/rules.
+    + Add the package to Build-Depends.
+  * Add DEP-8 tests that run adequate(1) against the packages.
+  * Add patch (tests-count-eom.diff) to make the count.t test failures on the
+    last day of the month non-fatal (closes: #743238). Thanks to James
+    Dietrich for the bug report and the analysis of the problem.
+  * Remove a long obsolete comment from debian/rules.
+  * Drop tests-unset-env-vars.diff, as the problem of test suite stomping on
+    user's data has been fixed upstream.
+    Set TASKDATA and TASKRC to specially-crafted values (both in debian/rules
+    and in the DEP-8 test), so that task trips over it if the problem
+    reappears in the future 
+  * Mark tests-fail.diff as forwarded upstream.
+
+ -- Jakub Wilk <jwilk@debian.org>  Wed, 02 Apr 2014 11:33:52 +0200
+
+task (2.3.0+dfsg-1) unstable; urgency=low
+
+  * Upload to unstable.
+  * Repackage .orig.tar to remove documentation that cannot be edited with
+    free tools (closes: #737478).
+  * Add patch (no-task-ref.diff) not try to install task-ref.pdf, as it's now
+    missing.
+  * Drop code to remove pre-built static libraries from debian/rules, as they
+    are not included in the repacked .orig.tar.
+  * Switch to xz compression, both for .orig.tar and .debian.tar.
+  * Update the watch file.
+
+ -- Jakub Wilk <jwilk@debian.org>  Thu, 13 Feb 2014 23:33:28 +0100
+
+task (2.3.0-1) experimental; urgency=low
+
+  * New upstream release.
+  * Fix debian/watch to correctly handle non-beta versions.
+  * Drop patches that were applied upstream:
+    + customizable-rcdir.diff;
+    + no-path-max.diff;
+    + tests-fix-pri-sort.diff;
+    + tests-fix-bug.annual.diff;
+    + system-kfreebsd.diff;
+    + system-hurd.diff;
+    + typos.diff.
+  * Refresh remaining patches.
+  * Add patch (fix-groff-warnings.diff) to fix some groff warnings.
+  * Force gzip for .debian.tar compression.
+
+ -- Jakub Wilk <jwilk@debian.org>  Sun, 19 Jan 2014 23:19:34 +0100
+
+task (2.3.0~beta2-2) experimental; urgency=low
+
+  * Add patches (tests-fix-pri-sort.diff, tests-fix-bug.annual.diff) to fix a
+    few test failures.
+
+ -- Jakub Wilk <jwilk@debian.org>  Wed, 08 Jan 2014 12:23:45 +0100
+
+task (2.3.0~beta2-1) experimental; urgency=low
+
+  * New upstream beta release.
+  * Update the watch file and the get-orig-source script to accept beta
+    versions.
+  * Drop patches that were applied upstream:
+    + tests-out-of-tree.diff;
+    + tests-temporary-directory.diff;
+    + directory-no-path-max.diff;
+    * directory-handle-dt-unknown.diff.
+  * Refresh remaining patches.
+  * Fix support for GNU/Hurd and GNU/kFreeBSD:
+    + Update system-kfreebsd.diff; partially applied upstream.
+    + Update system-hurd.diff; partially applied upstream.
+    + Add patch (no-path-max.diff) to use get_current_dir_name() instead of
+      relying on PATH_MAX, as the latter is not defined on GNU/Hurd.
+  * Add code to remove pre-built static libraries to debian/rules; the static
+    libraries are back in .orig.tar…
+  * Adapt the test suite to Debian needs:
+    + Update tests-for-released-version.diff to allow running tests against a
+      beta version of taskwarrior.
+    + Add patch (tests-time-independent.diff) to disable checking if copyright
+      information covers the current year.
+  * Build-depend on libreadline-dev (needed by the new tasksh command).
+  * Link with --as-needed, to avoid direct dependencies on ncurses.
+  * Update DEP-8 tests for tasksh.
+  * Update Depends in the DEP-8 control file, to takie into account the binary
+    package rename.
+  * Drop tests-set-build-type.diff. Instead, add a patch
+    (enable-warnings.diff) to enable warnings globally and to stop hardcoding
+    build type. Set build type in debian/rules via cmake configuration
+    variable.
+  * Add patch (typos.diff) to fix a few spelling mistakes.
+  * Disable GnuTLS support for the time being.
+
+ -- Jakub Wilk <jwilk@debian.org>  Tue, 07 Jan 2014 22:35:48 +0100
+
+task (2.2.0-4) experimental; urgency=low
+
+  * Fix a typo in the copyright file.
+  * Update years in the copyright file.
+  * Bump standards version to 3.9.5 (no changes needed).
+  * Replace patch to hardcode Debian-specific paths (debian-paths.diff) with a
+    cleaner patch (customizable-rcdir.diff) that makes TASK_RCDIR customizable
+    at configure time. Update deban/rules to set TASK_DOCDIR and TASK_RCDIR at
+    configure time.
+  * Rename the binary package: task → taskwarrior (closes: #719317).
+    Thanks to Ben Armstrong for the bug report.
+    + Rename the main package as “taskwarrior” in debian/control; add
+      Conflicts/Replaces against the old “task” package.
+    + Add transitional package to debian/control.
+    + Move Pre-Depends to the transitional package.
+    + Rename debhelper configuration files.
+    + Update debian/rules and README.Debian accordingly.
+    + Make /usr/share/task a symlink to /usr/share/taskwarrior, for backwards
+      compatibility.
+    + Add postinst script to deal with transitioning /usr/share/task from
+      directory to symlink.
+    + Add lintian override for conflicts-with-version. Conflicts makes
+      transitioning /usr/share/task from directory to symlink slightly easier.
+  * Keep the i18n directory in /usr/share/doc.
+  * Drop code to remove pre-built static libraries from debian/rules; the
+    static libraries are no longer shipped in .orig.tar.
+  * Ship add-ons in /usr/share/doc as examples.
+  * Stop dh_compress from compressing examples.
+  * Refresh patches.
+  * Add “XS-Testsuite: autopkgtest”.
+
+ -- Jakub Wilk <jwilk@debian.org>  Sat, 04 Jan 2014 19:56:06 +0100
+
+task (2.2.0-3) unstable; urgency=low
+
+  * Rename /etc/bash_completion.d/task.sh back as /etc/bash_completion.d/task
+    (closes: #710321):
+    + Update debian/rules accordingly.
+    + Add debian/maintscript to let dh_installdeb add maintainer script
+      snippets to remove the old file.
+    + Bump minimum required version of debhelper to 8.1 (for
+      dpkg-maintscript-helper support.)
+    + Add ${misc:Pre-Depends} to Pre-Depends. (It's not strictly necessary for
+      unstable, but it eases wheezy backports).
+  * Add DEP-8 tests.
+
+ -- Jakub Wilk <jwilk@debian.org>  Mon, 03 Jun 2013 18:47:50 +0200
+
+task (2.2.0-2) unstable; urgency=low
+
+  * Upload to unstable.
+  * Adapt the test suite to Debian needs:
+    + Add patch (tests-set-build-type.diff) to set cmake build type to ‘debug’
+      and append -Wall to CXXFLAGS. That way tests are built with the same
+      flags as normal code.
+
+ -- Jakub Wilk <jwilk@debian.org>  Sun, 12 May 2013 02:12:45 +0200
+
+task (2.2.0-1) experimental; urgency=low
+
+  * New upstream release.
+    + This release no longer supports Lua extensions.
+      - Remove lublua5.1-dev from Build-Depends.
+    + Drop fix-manpage-formatting.diff; applied upstream.
+    + Drop fix-manpage-installation.diff; applied upstream.
+    + Drop fix-typos.diff; applied upstream.
+    + Refresh other patches.
+    + Update debian/copyright.
+    + Fix duplication of completed task on merge (closes: #700255).
+      Thanks to Helmut Grohne for the bug report.
+  * Add supplemental .orig.tar with the test suite.
+    + Add get-orig-source target, which imports the tests from the upstream
+      VCS.
+  * Adapt the test suite to Debian needs:
+    + Add patch (tests-out-of-tree.diff) to allow running tests out-of-tree
+    + Add patch (tests-unset-env-vars.diff) unset TASK* environment variables.
+    + Add patch (tests-fail.diff) to make the test runner exit with non-zero
+      code if any of the tests fail.
+    + Add patch (tests-for-released-version.diff) to allow running tests
+      against a released version of taskwarrior.
+    + Add patch (tests-temporary-directory.diff) to fix insecure use of /tmp.
+  * Run tests at build time.
+    + Update debian/rules.
+    + Add libjson-perl to Build-Depends.
+  * Add patch (directory-no-path-max.diff) to use get_current_dir_name()
+    instead of relying on PATH_MAX, as the latter is not defined on GNU/Hurd.
+  * Add patch (directory-handle-dt-unknown.diff) to properly handle d_type ==
+    DT_UNKNOWN.
+  * Add patch (system-hurd.diff) to add support for GNU/Hurd systems.
+  * Add patch (system-kfreebsd.diff) to add support for GNU/kFreeBSD systems.
+  * Link against libuuid.
+    + Add uuid-dev to Build-Depends.
+  * Don't use dh_testdir; instead use target dependencies to ensure that
+    debian/rules is run from the correct directory.
+  * Run dh_clean as the first command in the clean target.
+
+ -- Jakub Wilk <jwilk@debian.org>  Thu, 11 Apr 2013 00:43:17 +0200
+
+task (2.1.2-1) experimental; urgency=low
+
+  * New maintainer.
+    Thanks to Alexander Neumann for his past work on this package.
+  * Relicense Debian packaging to the same license upstream uses (MIT), as
+    agreed with Alexander.
+  * New upstream release (closes: 693979).
+    + Fix order of priorities in the project summary (closes: #680353).
+      Thanks to Marcin Kulisz for the bug report.
+  * Update debian/copyright.
+  * Bump standards version to 3.9.4 (no changes needed).
+  * Switch to source format 3.0 (quilt).
+  * Remove pre-built static libraries early in the build* targets.
+  * Remove cmake.h in the clean target.
+  * Rewrite debian/rules from scratch, without cdbs.
+    + Drop "cbds" from Build-Depends.
+    + Add "dpkg-dev (>= 1.15.7)" to Build-Depends, for dpkg-buildflags.
+  * Don't install vim support files to the binary package; they are already
+    included in the vim package itself.
+  * Don't install /usr/share/task/refresh to the binary package; it's not
+    useful at runtime.
+  * Fix TASK_RCDIR in cmake.h (closes: #669344).
+    Thanks to Sylvain Fankhauser for the bug report.
+  * Add Lintian override for spelling-error-in-manpage; the misspelling in
+    question is deliberate.
+  * Add patch (fix-manpage-formatting.diff) to fix a formatting error in the
+    task(1) manual page (closes: #699332).
+  * Add patch (fix-manpage-installation.diff) to fix manual page installation
+    for out-of-tree builds.
+  * Add patch (fix-typos.diff) to fix some spelling errors.
+
+ -- Jakub Wilk <jwilk@debian.org>  Wed, 27 Feb 2013 17:05:06 +0100
+
+task (2.0.0-1) unstable; urgency=low
+
+  * new upstream version (closes: #666903)
+  * this version can be built using gcc-4.7 (closes: #667390)
+
+ -- Alexander Neumann <alexander@debian.org>  Sun, 08 Apr 2012 12:37:11 +0200
+
+task (1.9.4-2) unstable; urgency=low
+
+  * include right path to colorthemes in generated .taskrc (closes: #638269)
+
+ -- Alexander Neumann <alexander@debian.org>  Thu, 25 Aug 2011 22:18:17 +0200
+
+task (1.9.4-1) unstable; urgency=low
+
+  * new upstream version (closes: #635141)
+  * update standards version to 3.9.2 (no changes)
+
+ -- Alexander Neumann <alexander@debian.org>  Mon, 01 Aug 2011 22:01:52 +0200
+
+task (1.9.3-1) unstable; urgency=low
+
+  * new upstream version
+  * update standards version to 3.9.1 (no changes)
+
+ -- Alexander Neumann <alexander@debian.org>  Sun, 05 Dec 2010 13:46:37 +0100
+
+task (1.9.2-1) unstable; urgency=low
+
+  * new upstream version
+  * update standards version to 3.9.0
+
+ -- Alexander Neumann <alexander@debian.org>  Tue, 20 Jul 2010 10:02:25 +0200
+
+task (1.9.1-1) unstable; urgency=low
+
+  * new upstream version
+
+ -- Alexander Neumann <alexander@debian.org>  Mon, 31 May 2010 16:55:14 +0200
+
+task (1.9.0-3) unstable; urgency=low
+
+  * restored old (buggy) behaviour, as libuuid is untested (by upstream)
+    (reopens #573066, will be fixed upstream in 1.9.1)
+
+ -- Alexander Neumann <alexander@debian.org>  Tue, 09 Mar 2010 12:32:30 +0100
+
+task (1.9.0-2) unstable; urgency=low
+
+  * link against libuuid, use library function for generating uuids instead
+    of internal (not rfc-conforming) implementation (closes: #573066)
+
+ -- Alexander Neumann <alexander@debian.org>  Mon, 08 Mar 2010 22:57:19 +0100
+
+task (1.9.0-1) unstable; urgency=low
+
+  * new upstream version
+  * update standards version to 3.8.4
+  * change copyright notice for scripts/*, Thanks Torsten!
+
+ -- Alexander Neumann <alexander@debian.org>  Tue, 23 Feb 2010 01:17:40 +0100
+
+task (1.8.5-2) unstable; urgency=low
+
+  * Add libncurses5-dev to Build-Deps
+
+ -- Alexander Neumann <alexander@debian.org>  Tue, 09 Feb 2010 22:13:58 +0100
+
+task (1.8.5-1) unstable; urgency=low
+
+  * Initial release (closes: #531587)
+
+ -- Alexander Neumann <alexander@debian.org>  Tue, 02 Feb 2010 15:33:14 +0100

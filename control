@@ -1,0 +1,42 @@
+Source: task
+Section: utils
+Priority: optional
+Maintainer: Jakub Wilk <jwilk@debian.org>
+Build-Depends:
+ debhelper (>= 8.1), dh-buildinfo,
+ dpkg-dev (>= 1.15.7),
+ cmake,
+ uuid-dev,
+ libjson-perl,
+ libreadline-dev,
+Standards-Version: 3.9.5
+Homepage: http://taskwarrior.org
+XS-Testsuite: autopkgtest
+
+Package: taskwarrior
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: task (<< 2.2.0-4~)
+Replaces: task (<< 2.2.0-4~)
+Description: feature-rich console based todo list manager
+ Taskwarrior is a sophisticated command line todo list and task
+ manager with a lot of features:
+ .
+  * colorful tabbed output
+  * feature rich search function
+  * tags
+  * statistics
+  * Getting Things Done compatible
+  * interactive editing of items in text editor
+
+Package: task
+Section: oldlibs
+Priority: extra
+Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends}, taskwarrior (= ${binary:Version})
+Description: feature-rich console based todo list manager - transitional package
+ Taskwarrior is a sophisticated command line todo list and task
+ manager with a lot of features:
+ .
+ This is a transitional dummy package. It can be safely removed.

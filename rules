@@ -1,0 +1,86 @@
+#!/usr/bin/make -f
+
+cflags = $(shell dpkg-buildflags --get CFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)
+cxxflags = $(shell dpkg-buildflags --get CXXFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)
+ldflags = $(shell dpkg-buildflags --get LDFLAGS)
+
+cmake_options = \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_VERBOSE_MAKEFILE=ON \
+	-DCMAKE_BUILD_TYPE=debug \
+	-DCMAKE_C_FLAGS_DEBUG="$(cflags)" \
+	-DCMAKE_CXX_FLAGS_DEBUG="$(cxxflags)" \
+	-DCMAKE_EXE_LINKER_FLAGS_DEBUG="$(ldflags) -Wl,--as-needed" \
+	-DTASK_DOCDIR=share/doc/taskwarrior \
+	-DTASK_RCDIR=share/taskwarrior \
+	-DCMAKE_DISABLE_FIND_PACKAGE_GnuTLS=TRUE \
+
+parallel = -j$(or $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS))),1)
+
+.PHONY: clean
+clean: debian/control
+	dh_clean
+	rm -rf obj/
+	rm -f cmake.h
+
+.PHONY: build build-arch build-indep
+build build-arch: obj/stamp
+
+obj/stamp: debian/control
+	mkdir -p $(dir $@)
+	cd obj && cmake .. $(cmake_options)
+	$(MAKE) -C obj/ $(parallel)
+ifeq "$(filter nocheck,$(DEB_BUILD_OPTIONS))" ""
+	$(MAKE) -C obj/test/ $(parallel)
+	mkdir -p obj/home/ obj/mock/
+	echo 'this is not a valid taskrc' > obj/home/taskrc
+	ln -sf /bin/false obj/mock/scp
+	HOME="$(CURDIR)/obj/home/" \
+	PATH="$(CURDIR)/obj/mock/:$$PATH" \
+	TASKDATA="$(CURDIR)/obj/home/taskdata" \
+	TASKRC="$(CURDIR)/obj/home/taskrc" \
+	$(MAKE) -C obj/test/ test
+	! ls -d obj/home/taskdata 2>/dev/null
+endif
+	touch $(@)
+
+.PHONY: binary binary-arch binary-indep
+
+binary: binary-arch
+binary-arch: obj/stamp
+	dh_testroot
+	dh_prep
+	$(MAKE) -C obj/ install DESTDIR=../debian/taskwarrior/
+	mkdir -p debian/taskwarrior/usr/share/taskwarrior/
+	set -e; cd debian/taskwarrior/usr/share/doc/taskwarrior; \
+		rm rc/refresh; mv rc/* ../../taskwarrior; rmdir rc; \
+		mv scripts/add-ons examples; \
+		rm -rf scripts; \
+		rm INSTALL COPYING ChangeLog;
+	dh_install
+	cd debian/taskwarrior/etc/bash_completion.d && mv task.sh task
+	dh_installdocs
+	dh_buildinfo
+	dh_installchangelogs -p taskwarrior ChangeLog
+	dh_installchangelogs -N taskwarrior -X ChangeLog
+	dh_installexamples
+	dh_installman
+	dh_lintian
+	dh_link
+	dh_compress -Xexamples
+	dh_fixperms
+	dh_strip
+	dh_shlibdeps
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+debdir = $(dir $(firstword $(MAKEFILE_LIST)))
+version = $(shell dpkg-parsechangelog -SVersion)
+
+.PHONY: get-orig-source
+get-orig-source:
+	sh $(debdir)/get-orig-source.sh $(version)
+
+# vim:ts=4 sw=4 noet

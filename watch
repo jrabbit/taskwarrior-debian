@@ -1,0 +1,4 @@
+version=3
+opts="uversionmangle=s/[.]beta/~beta/,dversionmangle=s/[+]dfsg//" \
+http://taskwarrior.org/download/ \
+.*/task-([\d.]+(?:[.]beta\d+)?)\.tar\.gz
